@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Planetmodels list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Model</th>
+                <th>Manufacturer</th>
+                <th>Cruisespeed</th>
+                <th>Planenbseats</th>
+                <th>Isavailable</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for planetModel in planetModels %}
+            <tr>
+                <td><a href="{{ path('planetmodel_show', { 'id': planetModel.id }) }}">{{ planetModel.id }}</a></td>
+                <td>{{ planetModel.model }}</td>
+                <td>{{ planetModel.manufacturer }}</td>
+                <td>{{ planetModel.cruiseSpeed }}</td>
+                <td>{{ planetModel.planeNbSeats }}</td>
+                <td>{% if planetModel.isAvailable %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('planetmodel_show', { 'id': planetModel.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('planetmodel_edit', { 'id': planetModel.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('planetmodel_new') }}">Create a new planetModel</a>
+        </li>
+    </ul>
+{% endblock %}
