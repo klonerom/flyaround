@@ -187,4 +187,3 @@ class PlanetModel
         return $this->isAvailable;
     }
 }
-
