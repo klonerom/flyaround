@@ -28,6 +28,15 @@
                         <li>
                             <a href="{{ path('reservation_edit', { 'id': reservation.id }) }}">edit</a>
                         </li>
+                        <li>
+                            <em><a href="{{
+                            path('listing_index', {
+                                'reservation_id': reservation.id,
+                                'flight_id': reservation.flight.id,
+                                'planemodel_id': reservation.flight.plane.id,
+                            })
+                            }}">Voir mon vol en détail</a></em>
+                        </li>
                     </ul>
                 </td>
             </tr>

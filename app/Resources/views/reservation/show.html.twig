@@ -26,6 +26,15 @@
 
     <ul>
         <li>
+            <em><a href="{{
+            path('listing_index', {
+                'reservation_id': reservation.id,
+                'flight_id': reservation.flight.id,
+                'planemodel_id': reservation.flight.plane.id,
+            })
+            }}">Voir mon vol en détail</a></em>
+        </li>
+        <li>
             <a href="{{ path('reservation_index') }}">Back to the list</a>
         </li>
         <li>
