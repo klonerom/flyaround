@@ -37,7 +37,7 @@
             <a href="{{ path('review_index') }}">Back to the list</a>
         </li>
         <li>
-            <a href="#">Edit (à venir)</a>
+            <a href="{{ path('review_edit', {'id' : review.id}) }}">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}
