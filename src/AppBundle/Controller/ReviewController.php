@@ -49,7 +49,6 @@ class ReviewController extends Controller
 
         $form->handleRequest($request); //s'occupe de la réception des données envoyées par le formulaire via POST
 
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($review); //on indique a doctrine les infos a prendre en compte
