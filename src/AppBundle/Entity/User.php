@@ -3,14 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="`user`") //FOSUserBundle
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Reservation", mappedBy="passenger")
@@ -47,7 +48,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id; //protected car héritée de FOSUserBundle
 
     /**
      * @var string
@@ -81,6 +82,7 @@ class User
      * @var \DateTime
      *
      * @ORM\Column(name="creationDate", type="datetime")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $creationDate;
 
@@ -88,6 +90,7 @@ class User
      * @var int
      *
      * @ORM\Column(name="note", type="smallint")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $note;
 
@@ -281,6 +284,8 @@ class User
      */
     public function __construct()
     {
+        parent::__construct();//FOSUserBunble
+
         $this->reviewAuthors = new \Doctrine\Common\Collections\ArrayCollection();
     }
 

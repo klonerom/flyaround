@@ -68,3 +68,18 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+
+# FOSUserBundle Configuration
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    registration:
+        form:
+            type: AppBundle\Form\RegistrationType
+    service:                                              # since Symfony 3.4
+        mailer: fos_user.mailer.twig_swift    # since Symfony 3.4
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "%mailer_user%"
