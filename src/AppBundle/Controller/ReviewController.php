@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\ReviewType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -42,24 +43,56 @@ class ReviewController extends Controller
      */
     public function newAction(Request $request)
     {
-        $review = new Review();
-        $form = $this->createForm('AppBundle\Form\ReviewType', $review);
-        $form->handleRequest($request);
+        $review = new Review(); //review sera par la suite l'objet receptacle des infos envoyées lors soumission form
+
+        $form = $this->createForm(ReviewType::class, $review); //objet form qui récupère le retour de la méthode createform. l'objet $review recevra toutes les infos envoyés lors de la soumission du formulaire
+
+        $form->handleRequest($request); //s'occupe de la réception des données envoyées par le formulaire via POST
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($review);
-            $em->flush();
+            $em->persist($review); //on indique a doctrine les infos a prendre en compte
+            $em->flush(); //envoie les infos en bdd via Doctrine
 
-            //Return sur le show ne fois le formulaire soumis
-            //return $this->redirectToRoute('reservation_show', array('id' => $reservation->getId()));
-            return $this->redirectToRoute('review_show', array('id' => $review->getId()));
-
+            //Return sur le show une fois le formulaire soumis
+            return $this->redirectToRoute('review_show', array(
+                'id' => $review->getId()
+            ));
         }
 
         return $this->render('review/new.html.twig', array(
             'review' => $review,
             'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * Edit a review entity.
+     *
+     * @Route("/{id}/edit", name="review_edit")
+     * @Method({"GET", "POST"})
+     */
+    public function editAction(Request $request, Review $review)
+    {
+        $deleteForm = $this->createDeleteForm($review); //button delete pout twig
+
+        $editForm = $this->createForm(ReviewType::class, $review);
+        $editForm->handleRequest($request);
+
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            //Redirection : on reste sur la même page avec les champs modifiés
+            return $this->redirectToRoute('review_show', array(
+                'id' => $review->getId()
+            ));
+        }
+
+        return $this->render('review/edit.html.twig', array(
+            'review' => $review,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
         ));
     }
 
