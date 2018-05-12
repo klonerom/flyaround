@@ -15,9 +15,11 @@ class FlightInfo
      * FlightInfo constructor.
      * @param $unit
      */
-    public function __construct($unit)
+    public function __construct($unit, $unitTime)
     {
-        $this->unit = $unit;
+        $this->unit = $unit; //obligatoire pour pouvoir utiliser unit par la suite (dans twig par exemple)
+        $this->unitTime = $unitTime;
+
     }
 
 
@@ -57,5 +59,23 @@ class FlightInfo
         return $d;
     }
 
+    /**
+     * Calcul of Flight time
+     *
+     * @param $distance
+     * @param $speed
+     * @return float
+     */
+    public function getTime($distance, $speed)
+    {
+        $flightDuration = 0;
+
+        //prevent division 0
+        if (isset($speed) && $speed > 0) {
+            $flightDuration = ($distance / $speed) * 3600;//seconds
+        }
+
+        return gmdate("H:i:s", $flightDuration);//convert in hh:mm:ss
+    }
 
 }

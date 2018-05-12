@@ -2,6 +2,7 @@
 # https://symfony.com/doc/current/service_container.html
 parameters:
     #parameter_name: value
+    #unit: km #service FlightInfo : unit definie dans config.yml mais aurait pu etre definie ici aussi
 
 services:
     # default configuration for services in *this* file
@@ -34,12 +35,17 @@ services:
     #     arguments:
     #         $someArgument: 'some_value'
 
+
+    #Service configuration
+
     #FOSUserBundle registration
     app.form.registration:
        class: AppBundle\Form\RegistrationType
        tags:
            - { name: form.type, alias: app_user_registration }
 
-     AppBundle\Service\FlightInfo:
-         arguments:
-             $unit: '%unit%'
+    #Service FlightInfo
+    AppBundle\Service\FlightInfo:
+        arguments:
+            $unit: '%unit%'
+            $unitTime: '%unitTime%'
