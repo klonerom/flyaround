@@ -48,6 +48,20 @@ class ReservationController extends Controller
             $em->persist($reservation);
             $em->flush();
 
+            // Pilot mail
+            $message = (new \Swift_Message('Réservation Flyaround')) //subject
+                ->setFrom('reservations@flyaround.com') //email expediteur
+                ->setTo($reservation->getFlight()->getPilot()->getEmail())
+                ->setBody('Quelqu\'un vient de réserver une place sur votre vol.<br/>Merci de voyager avec Flyaround', 'text/html');
+            $this->get('mailer')->send($message);
+
+            // Passenger mail
+            $message = (new \Swift_Message('Réservation Flyaround'))
+                ->setFrom('reservations@flyaround.com')
+                ->setTo($this->getUser()->getEmail())
+                ->setBody('Votre réservation est enregistrée.<br/>Merci de voyager avec Flyaround', 'text/html');
+            $this->get('mailer')->send($message);
+
             return $this->redirectToRoute('reservation_show', array('id' => $reservation->getId()));
         }
 
