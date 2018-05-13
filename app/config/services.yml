@@ -49,3 +49,13 @@ services:
         arguments:
             $unit: '%unit%'
             $unitTime: '%unitTime%'
+
+    #Service Mailer
+#    app.service.mailer:
+#    AppBundle\Service\Mailer:
+    service:
+        id: qEmail.mailer
+        class: AppBundle\Service\Mailer
+        arguments:
+            $mailer: '%mailer%'
+            $templating: '%templating%'
