@@ -4,7 +4,7 @@ namespace AppBundle\Service;
 
 /**
  * Class Mailer
- * @package AppBundle\Services
+ * @package AppBundle\Service
  */
 class Mailer
 {

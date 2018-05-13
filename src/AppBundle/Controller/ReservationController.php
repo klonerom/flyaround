@@ -52,6 +52,7 @@ class ReservationController extends Controller
             $em->persist($reservation);
             $em->flush();
 
+            //$pilotMail = new Mailer($mailer, $template);
             // Pilot mail
             $message = (new \Swift_Message('Réservation Flyaround')) //subject
                 ->setFrom('reservations@flyaround.com') //email expediteur
