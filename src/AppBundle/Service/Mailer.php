@@ -2,6 +2,9 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Reservation;
+use AppBundle\Entity\User;
+
 /**
  * Class Mailer
  * @package AppBundle\Service
@@ -10,7 +13,7 @@ class Mailer
 {
     protected $mailer;
     protected $templating;
-    private $from = "no-reply@example.fr";
+    private $from = "reservations@flyaround.com";
     private $reply = "contact@example.fr";
     private $name = "Equipe wcs";
 
@@ -34,6 +37,25 @@ class Mailer
 
         $this->mailer->send($mail);
     }
+
+    public function pilotReservationMail(Reservation $reservation)
+    {
+        $subject = 'Nouvelle réservation';
+        $to = $reservation->getFlight()->getPilot()->getEmail();
+        $body = $this->templating->render('email\contactPilot.html.twig', array('reservation' => $reservation));
+
+        $this->sendMail($to, $subject, $body);
+    }
+
+    public function userReservationMail(Reservation $reservation)
+    {
+        $subject = 'Réservation confirmée';
+        $to = $reservation->getPassenger()->getEmail();
+        $body = $this->templating->render('email\contactUser.html.twig', array('reservation' => $reservation));
+
+        $this->sendMail($to, $subject, $body);
+    }
+
 
 
 }

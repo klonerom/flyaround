@@ -38,34 +38,21 @@ class ReservationController extends Controller
      * @Route("/new", name="reservation_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, Mailer $mailer)
     {
         $reservation = new Reservation();
         $form = $this->createForm('AppBundle\Form\ReservationType', $reservation);
         $form->handleRequest($request);
-
-
-        //var_dump($this->get('qEmail.mailer'));die;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($reservation);
             $em->flush();
 
-            //$pilotMail = new Mailer($mailer, $template);
-            // Pilot mail
-            $message = (new \Swift_Message('Réservation Flyaround')) //subject
-                ->setFrom('reservations@flyaround.com') //email expediteur
-                ->setTo($reservation->getFlight()->getPilot()->getEmail())
-                ->setBody('Quelqu\'un vient de réserver une place sur votre vol.<br/>Merci de voyager avec Flyaround', 'text/html');
-            $this->get('mailer')->send($message);
-
-            // Passenger mail
-            $message = (new \Swift_Message('Réservation Flyaround'))
-                ->setFrom('reservations@flyaround.com')
-                ->setTo($this->getUser()->getEmail())
-                ->setBody('Votre réservation est enregistrée.<br/>Merci de voyager avec Flyaround', 'text/html');
-            $this->get('mailer')->send($message);
+            //Mail to Pilot
+            $mailer->pilotReservationMail($reservation);
+            //Mail to user
+            $mailer->userReservationMail($reservation);
 
             return $this->redirectToRoute('reservation_show', array('id' => $reservation->getId()));
         }
@@ -102,9 +89,14 @@ class ReservationController extends Controller
     {
         $deleteForm = $this->createDeleteForm($reservation);
         $editForm = $this->createForm('AppBundle\Form\ReservationType', $reservation);
+        //Hydrate l'objet $reservation avec les données du formulaire
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+
+            //revoie les informations de l'objet $reservation
+            //$data = $editForm->getData();
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('reservation_edit', array('id' => $reservation->getId()));

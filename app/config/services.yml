@@ -53,9 +53,5 @@ services:
     #Service Mailer
 #    app.service.mailer:
 #    AppBundle\Service\Mailer:
-    service:
-        id: qEmail.mailer
-        class: AppBundle\Service\Mailer
-        arguments:
-            $mailer: '%mailer%'
-            $templating: '%templating%'
+    AppBundle\Service\Mailer:
+            class: AppBundle\Service\Mailer
