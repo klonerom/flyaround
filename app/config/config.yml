@@ -9,6 +9,7 @@ parameters:
     locale: en
     unit: km #Service FlightInfo : Definition of unit
     unitTime: h:m:s
+    mailer_service_email_from: reservations2@flyaround.com
 
 framework:
     #esi: ~

@@ -12,14 +12,15 @@ class Mailer
 {
     protected $mailer;
     protected $templating;
-    private $from = "reservations@flyaround.com";
+    //private $from = "reservations@flyaround.com";
     private $reply = "contact@example.fr";
     private $name = "Equipe wcs";
 
-    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating)
+    public function __construct(\Swift_Mailer $mailer, \Twig_Environment $templating, $mailer_service_email_from)
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
+        $this->mailer_service_email_from = $mailer_service_email_from;
     }
 
     protected function sendMail($to, $subject, $body)
@@ -27,7 +28,7 @@ class Mailer
         $mail = \Swift_Message::newInstance();
 
         $mail
-            ->setFrom($this->from, $this->name)
+            ->setFrom($this->mailer_service_email_from, $this->name)
             ->setTo($to)
             ->setSubject($subject)
             ->setBody($body)
