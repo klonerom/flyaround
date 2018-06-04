@@ -3,7 +3,6 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Reservation;
-use AppBundle\Entity\User;
 
 /**
  * Class Mailer
@@ -42,7 +41,9 @@ class Mailer
     {
         $subject = 'Nouvelle réservation';
         $to = $reservation->getFlight()->getPilot()->getEmail();
-        $body = $this->templating->render('email\contactPilot.html.twig', array('reservation' => $reservation));
+        $body = $this->templating->render('email\contactPilot.html.twig', [
+            'reservation' => $reservation
+        ]);
 
         $this->sendMail($to, $subject, $body);
     }
@@ -51,11 +52,11 @@ class Mailer
     {
         $subject = 'Réservation confirmée';
         $to = $reservation->getPassenger()->getEmail();
-        $body = $this->templating->render('email\contactUser.html.twig', array('reservation' => $reservation));
+        $body = $this->templating->render('email\contactUser.html.twig', [
+            'reservation' => $reservation
+            ]);
 
         $this->sendMail($to, $subject, $body);
     }
-
-
 
 }
