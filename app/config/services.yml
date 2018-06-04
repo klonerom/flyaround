@@ -54,4 +54,6 @@ services:
 #    app.service.mailer:
 #    AppBundle\Service\Mailer:
     AppBundle\Service\Mailer:
-            class: AppBundle\Service\Mailer
+        class: AppBundle\Service\Mailer
+        arguments:
+            $mailer_service_email_from: '%mailer_service_email_from%'
